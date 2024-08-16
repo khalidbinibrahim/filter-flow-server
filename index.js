@@ -48,28 +48,28 @@ app.get('/products', async (req, res) => {
   const { page = 1, limit = 10, search = '', sortBy = 'creationDate', order = 'desc', category, brand, minPrice, maxPrice } = req.query;
 
   let query = {
-    name: { $regex: search, $options: 'i' },
-    ...(category && { category }),
-    ...(brand && { brand }),
-    ...(minPrice && maxPrice && { price: { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) } }),
+      name: { $regex: search, $options: 'i' },
+      ...(category && { category }),
+      ...(brand && { brand }),
+      ...(minPrice && maxPrice && { price: { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) } }),
   };
 
   let sort = { [sortBy]: order === 'desc' ? -1 : 1 };
 
   try {
-    const products = await db.collection('products')
-      .find(query)
-      .sort(sort)
-      .skip((page - 1) * limit)
-      .limit(parseInt(limit))
-      .toArray();
+      const products = await db.collection('products')
+          .find(query)
+          .sort(sort)
+          .skip((page - 1) * limit)
+          .limit(parseInt(limit))
+          .toArray();
 
-    const total = await db.collection('products').countDocuments(query);
+      const total = await db.collection('products').countDocuments(query);
 
-    res.json({ products, totalPages: Math.ceil(total / limit) });
+      res.json({ products, totalPages: Math.ceil(total / limit) });
   } catch (err) {
-    console.error('Failed to fetch products', err);
-    res.status(500).json({ error: 'Failed to fetch products' });
+      console.error('Failed to fetch products', err);
+      res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
 
