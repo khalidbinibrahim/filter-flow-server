@@ -9,6 +9,8 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
+    'https://filter-flow.web.app',
+    'https://filter-flow.firebaseapp.com'
   ],
   credentials: true
 }));
