@@ -33,17 +33,6 @@ async function connectDb() {
 
 connectDb();
 
-app.post('/products', async (req, res) => {
-  try {
-    const product = { ...req.body, creationDate: new Date() };
-    const result = await db.collection('products').insertOne(product);
-    res.status(201).json(result.ops[0]);
-  } catch (err) {
-    console.error('Failed to insert product', err);
-    res.status(500).json({ error: 'Failed to insert product' });
-  }
-});
-
 app.get('/products', async (req, res) => {
   const { page = 1, limit = 10, search = '', sortBy = 'creationDate', order = 'desc', category, brand, minPrice, maxPrice } = req.query;
 
